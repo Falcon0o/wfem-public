@@ -1,0 +1,14 @@
+file(GLOB WFEM_NUMERICS_LINEAR_SOLVERS_SRC
+    pardiso.cpp
+    mumps.cpp
+    cudss.cpp
+    amgx.cpp
+)
+
+set(WFEM_NUMERICS_LINEAR_SOLVERS_SRC ${WFEM_NUMERICS_LINEAR_SOLVERS_SRC} PARENT_SCOPE)
+
+# file(GLOB WFEM_NUMERICS_ODE_HDR
+#     solver.hpp
+# )
+
+# install(FILES ${WFEM_NUMERICS_ODE_HDR} DESTINATION ${WFEM_HEARDER_INSTALL_PREFIX}/numerics/ode)

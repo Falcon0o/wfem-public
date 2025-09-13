@@ -1,0 +1,3 @@
+/home/wangxinyu/workspace/myself/wfem/sample/20250328/build/CMakeFiles/demo.dir
+/home/wangxinyu/workspace/myself/wfem/sample/20250328/build/CMakeFiles/edit_cache.dir
+/home/wangxinyu/workspace/myself/wfem/sample/20250328/build/CMakeFiles/rebuild_cache.dir

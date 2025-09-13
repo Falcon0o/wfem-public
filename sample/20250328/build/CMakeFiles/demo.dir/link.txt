@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/demo.dir/main.cpp.o -o demo   -L/home/wangxinyu/workspace/myself/wfem/sample/20250328/../../lib  -Wl,-rpath,/home/wangxinyu/workspace/myself/wfem/sample/20250328/../../lib -lwfem 

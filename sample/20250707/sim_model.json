@@ -1,0 +1,105 @@
+{
+    "Blocks": [
+        {
+            "ID": 0,
+            "Name": "Clock 0",
+            "Type": "Clock",
+            "Parameters": {},
+            "InputPorts": [],
+            "OutputPorts": [
+                {
+                    "ID": 0,    
+                    "NumericType": "Real",
+                    "DataType": "Double",
+                    "Dims": []
+                }
+            ]
+        },
+        {
+            "ID": 1,
+            "Name": "Sin 0",
+            "Type": "TrigonometricFunction",
+            "Parameters": {
+                "Function": "cos"
+            },
+            "InputPorts": [
+                {
+                    "ID": 0,    
+                    "NumericType": "Real",
+                    "DataType": "Double",
+                    "Dims": []
+                }
+            ],
+            "OutputPorts": [
+                {
+                    "ID": 0,    
+                    "NumericType": "Real",
+                    "DataType": "Double",
+                    "Dims": []
+                }
+            ]
+        },
+        {
+            "ID": 2,
+            "Name": "Product 0",
+            "Type": "Product",
+            "输入端口数量": "根据 InputPorts 数组长度变化决定",
+            "Parameters": {},
+            "InputPorts": [
+                {
+                    "ID": 0,    
+                    "NumericType": "Real",
+                    "DataType": "Double",
+                    "Dims": []
+                },
+                {
+                    "ID": 1,    
+                    "NumericType": "Real",
+                    "DataType": "Double",
+                    "Dims": []
+                }
+            ],
+            "OutputPorts": [
+                {
+                    "ID": 0,    
+                    "NumericType": "Real",
+                    "DataType": "Double",
+                    "Dims": []
+                }
+            ]
+        },
+        {
+            "ID": 3,
+            "Name": "Integrator 0",
+            "Type": "Integrator",
+            "Parameters": {
+                "NumContStates": 1,
+                "UseInternalIC": true,
+                "IC": [1]
+            },
+            "InputPorts": [
+                {
+                    "ID": 0,    
+                    "NumericType": "Real",
+                    "DataType": "Double",
+                    "Dims": []
+                }
+            ],
+            "OutputPorts": [
+                {
+                    "ID": 0,    
+                    "NumericType": "Real",
+                    "DataType": "Double",
+                    "Dims": []
+                }
+            ]
+        }
+    ],
+    "Connections": 
+    [
+        [0, 0, 1, 0],
+        [1, 0, 2, 0],
+        [2, 0, 3, 0],
+        [3, 0, 2, 1]
+    ]
+}

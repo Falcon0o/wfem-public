@@ -1,0 +1,69 @@
+{
+    "version": 6,
+    "cmakeMinimumRequired": {
+        "major": 3,
+        "minor": 23,
+        "patch": 0
+    },
+    "configurePresets": [
+        {
+            "name": "default",
+            "hidden": true,
+            "displayName": "Default Config",
+            "description": "Default build using Ninja generator",
+            "generator": "Ninja Multi-Config",
+            "binaryDir": "${sourceDir}/build",
+            "cacheVariables": {
+                "WFEM_ENABLE_USER_DEFINED_BACKTRACE": true,
+                "WFEM_ENABLE_MPI": false,
+                "WFEM_CHECK_SLOW": true,
+                "WFEM_HEARDER_INSTALL_PREFIX": "${sourceDir}/include/wfem"
+                // "WFEM_MUMPS_DIR": "${sourceDir}/contrib/MUMPS_5.8.1"
+            },
+            "environment": {
+            }
+        },
+        {
+            "name": "linux-default",
+            "inherits": "default",
+            "hidden": true
+        },
+        {
+            "name": "linux-debug",
+            "inherits": "linux-default",
+            "hidden": false,
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug",
+                "WFEM_ENABLE_MPI": true
+            }
+        },
+        {
+            "name": "linux-release",
+            "inherits": "linux-default",
+            "hidden": false, 
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release",
+                "WFEM_ENABLE_USER_DEFINED_BACKTRACE": true,
+                "WFEM_ENABLE_MPI": true,
+                "WFEM_ENABLE_MKL": true,
+                "WFEM_ENABLE_NVTX": true
+            }
+        }
+    ],
+    "buildPresets": [
+        {
+            "name": "linux-debug",
+            "configurePreset": "linux-debug",
+            "configuration": "Debug"
+        },
+        {
+            "name": "linux-release",
+            "configurePreset": "linux-release",
+            "configuration": "Release"
+        }
+    ],
+    "testPresets": [
+    ],
+    "packagePresets": [
+    ]
+}
