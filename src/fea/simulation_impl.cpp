@@ -59,7 +59,7 @@ Simulation::Impl::~Impl()
 void Simulation::Impl::load_inp_file(const char* inp_file)
 {
     wfem::abaqus::InpParser inp_parser;
-    inp_parser.parse("/home/wangxinyu/workspace/myself/wfem/data/conrod.inp");
+    inp_parser.parse(inp_file);
     auto report = inp_parser.get_report();
 
     m_x0.assign(report->node_coords(), report->node_coords() + report->n_nodes() * 3);
