@@ -59,7 +59,7 @@ Simulation::Impl::~Impl()
 void Simulation::Impl::load_inp_file(const char* inp_file)
 {
     wfem::abaqus::InpParser inp_parser;
-    inp_parser.parse(inp_file);
+    inp_parser.parse("/home/wangxinyu/workspace/myself/wfem/data/conrod.inp");
     auto report = inp_parser.get_report();
 
     m_x0.assign(report->node_coords(), report->node_coords() + report->n_nodes() * 3);
@@ -120,10 +120,15 @@ void Simulation::Impl::run()
     Material<LinearElastic, Isotropy> mat(7.85e-09, 210000., 0.3);
     
     Element::Context ctx{
+        .scale_M = 1.,
+        .scale_Qq = 0.,
+        .scale_Qv = 0.,
+        .scale_Q = 1.,
         .x0 = m_x0.data(),
         .u = m_u.data(),
         .v = nullptr,
-        .material = &mat
+        .material = &mat,
+        .grav_acce = {0, 0, 0}
     };
 
     m_unpacked_lhs.set_zero();
@@ -202,9 +207,13 @@ void Simulation::Impl::solve_pardiso(DenseVector<double>& x, const DenseVector<d
     m_pardiso_lhs = m_unpacked_lhs;
 
     m_pardiso_solver->analyze(m_pardiso_lhs);
+    // 8
+    // time_points.emplace_back("PARDISO 重排序和符号分解");
 
     m_pardiso_solver->factorize(m_pardiso_lhs);
 
+    // 9
+    // time_points.emplace_back("PARDISO 数值LU分解");
     m_pardiso_solver->solve(x, b);
 }
 
@@ -226,9 +235,38 @@ void Simulation::Impl::solve_cudss(DenseVector<double>& x, const DenseVector<dou
 
 void Simulation::Impl::solve_amgx(DenseVector<double>& x, const DenseVector<double>& b)
 {
+    const char* config_string = R"(
+    {
+        "config_version": 2, 
+        "determinism_flag": 0, 
+        "solver": {
+            "print_grid_stats": 0,
+            "print_solve_stats": 0,
+            "max_uncolored_percentage": 0.15, 
+            "algorithm": "AGGREGATION", 
+            "obtain_timings": 1, 
+            "solver": "AMG", 
+            "smoother": "MULTICOLOR_GS", 
+            "presweeps": 1, 
+            "symmetric_GS": 1, 
+            "selector": "SIZE_2", 
+            "coarsest_sweeps": 2, 
+            "max_iters": 100, 
+            "monitor_residual": 1, 
+            "postsweeps": 1, 
+            "scope": "main", 
+            "max_levels": 50, 
+            "matrix_coloring_scheme": "MIN_MAX", 
+            "tolerance" : 1e-08, 
+            "convergence": "RELATIVE_INI",
+            "norm": "L1", 
+            "cycle": "V"
+        }
+    }
+    )";
     if (m_amgx_solver == nullptr)
     {
-        m_amgx_solver = new LinearSolver::AMGX;
+        m_amgx_solver = new LinearSolver::AMGX(config_string);
     }
 
     m_amgx_lhs = m_unpacked_lhs;
